@@ -192,6 +192,8 @@ public class Interfaz extends javax.swing.JFrame {
             ResultadoFinal = resultadointro - resultadohoy;
         }
         return ResultadoFinal;
+        
+        
     }
 
     
