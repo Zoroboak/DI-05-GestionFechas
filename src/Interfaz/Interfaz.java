@@ -5,12 +5,13 @@
  */
 package Interfaz;
 
-import fechas.Fecha;
+import fechas.*;
 import java.awt.Color;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -24,63 +25,181 @@ public class Interfaz extends javax.swing.JFrame {
     Fecha fechaDeHoy = new Fecha();
     Fecha FechaIntroducida = new Fecha();
 
-    //DocumentListener Global
-    DocumentListener listener = new DocumentListener() {
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            try {
-                comprobarDatos();
-            } catch (Exception ex) {
-                jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
-                jTextAreaConsolaDeErrores.setForeground(Color.red);
-            }
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            try {
-                comprobarDatos();
-            } catch (Exception ex) {
-                jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
-                jTextAreaConsolaDeErrores.setForeground(Color.red);
-            }
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            try {
-                comprobarDatos();
-            } catch (Exception ex) {
-                jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
-                jTextAreaConsolaDeErrores.setForeground(Color.red);
-            }
-        }
-    };
+    //lista de DocumentListeners para los dias introducidos por el usuario: 1 campoDia, 2 campoMes, 3 campoAño
+    DocumentListener listaDocumentListeners[] = new DocumentListener[4];
+    int punteroListeners = 0;
 
     /**
-     * Creates new form Interfaz
+     * Creamos nueva instancia de la interfaz
      */
     public Interfaz() {
         initComponents();
-        ponerFechaHoy();
-
-        try {
-            comprobarDatos();
-        } catch (Exception ex) {
-            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        setLocationRelativeTo(null);
-        jTextAreaConsolaDeErrores.setLineWrap(true);
-        jTextFieldDiaIntroducido.getDocument().addDocumentListener(listener);
-        jTextFieldMesIntroducido.getDocument().addDocumentListener(listener);
-        jTextFieldAñoIntroducido.getDocument().addDocumentListener(listener);
+        declaracionAtributosIniciales();
     }
 
     /**
-     * Metodo que obtiene la fecha de hoy
+     * Metodo que le asigna a la interfaz una serie de atributos iniciales
      */
-    public void ponerFechaHoy() {
+    private void declaracionAtributosIniciales() {
+        //Por defecto, centramos la ventana
+        setLocationRelativeTo(null);
+        //Activamos la propiedad LineWrap de la consola de errores en la interfaz
+        jTextAreaConsolaDeErrores.setLineWrap(true);
+
+        //<editor-fold defaultstate="collapsed" desc="For de Inicialización para el listener">
+        //Inicializamos cada uno de los listener para los dias introducidos por el usuario: 1 campoDia, 2 campoMes, 3 campoAño
+        for (punteroListeners = 1; punteroListeners <= 3; punteroListeners++) {
+            listaDocumentListeners[punteroListeners] = new DocumentListener() {
+                @Override
+                public void insertUpdate(DocumentEvent e) {
+                    try {
+                        int aux = punteroListeners;
+                        comprobarDatos(aux);
+                    } catch (Exception ex) {
+                        jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                        jTextAreaConsolaDeErrores.setForeground(Color.red);
+                    }
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e) {
+                    try {
+                        int aux = punteroListeners;
+                        comprobarDatos(aux);
+                    } catch (Exception ex) {
+                        jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                        jTextAreaConsolaDeErrores.setForeground(Color.red);
+                    }
+                }
+
+                @Override
+                public void changedUpdate(DocumentEvent e) {
+                    try {
+                        int aux = punteroListeners;
+                        comprobarDatos(aux);
+                    } catch (Exception ex) {
+                        jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                        jTextAreaConsolaDeErrores.setForeground(Color.red);
+                    }
+                }
+            };
+
+        }
+
+//</editor-fold>
+        //Le añadimos nuestros documentListeners a los campos que el usuario puede editar
+        jTextFieldDiaIntroducido.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    comprobarDatos(1);
+                } catch (Exception ex) {
+                    jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                    jTextAreaConsolaDeErrores.setForeground(Color.red);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    comprobarDatos(1);
+                } catch (Exception ex) {
+                    jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                    jTextAreaConsolaDeErrores.setForeground(Color.red);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                try {
+                    comprobarDatos(1);
+                } catch (Exception ex) {
+                    jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                    jTextAreaConsolaDeErrores.setForeground(Color.red);
+                }
+            }
+        });
+        jTextFieldMesIntroducido.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    comprobarDatos(2);
+                } catch (Exception ex) {
+                    jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                    jTextAreaConsolaDeErrores.setForeground(Color.red);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    comprobarDatos(2);
+                } catch (Exception ex) {
+                    jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                    jTextAreaConsolaDeErrores.setForeground(Color.red);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                try {
+                    comprobarDatos(2);
+                } catch (Exception ex) {
+                    jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                    jTextAreaConsolaDeErrores.setForeground(Color.red);
+                }
+            }
+        });
+        jTextFieldAñoIntroducido.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                try {
+                    comprobarDatos(3);
+                } catch (Exception ex) {
+                    jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                    jTextAreaConsolaDeErrores.setForeground(Color.red);
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                try {
+                    comprobarDatos(3);
+                } catch (Exception ex) {
+                    jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                    jTextAreaConsolaDeErrores.setForeground(Color.red);
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                try {
+                    comprobarDatos(3);
+                } catch (Exception ex) {
+                    jTextAreaConsolaDeErrores.setText(ex.getLocalizedMessage());
+                    jTextAreaConsolaDeErrores.setForeground(Color.red);
+                }
+            }
+        });
+
+        //La primera vez que arranca el programa, le asignamos la fecha de hoy
+        establecerFechaHoy();
+        
+        //Una vez le asignamos una fecha, comprobamos los datos por primera vez
+        try {
+            for (int i = 1; i <= 3; i++) {
+                comprobarDatos(i);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * Metodo que obtiene la fecha de hoy y se la asigna a la interfaz
+     */
+    public void establecerFechaHoy() {
+        //Inicializamos un Objeto gregoranCalendar para obtener los datos
         Calendar fecha = new GregorianCalendar();
         String dia = Integer.toString(fecha.get(Calendar.DAY_OF_MONTH));
         String mes = Integer.toString(fecha.get(Calendar.MONTH) + 1);
@@ -89,10 +208,12 @@ public class Interfaz extends javax.swing.JFrame {
         jTextFieldMesHoy.setText(mes);
         jTextFieldAñoHoy.setText(anio);
 
+        //Le asignamos los mismos datos a la fecha inicial del usuario
         jTextFieldDiaIntroducido.setText(dia);
         jTextFieldMesIntroducido.setText(mes);
         jTextFieldAñoIntroducido.setText(anio);
 
+        //Mostramos el valor del dia de la semana, según la fecha de hoy
         String[] diasDeLaSemana = new String[]{"Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"};
         String nombreDia = diasDeLaSemana[fecha.get(Calendar.DAY_OF_WEEK) - 1];
         jTextFieldDiaSemanaHoy.setText(nombreDia);
@@ -103,7 +224,7 @@ public class Interfaz extends javax.swing.JFrame {
      *
      * @throws Exception
      */
-    public void comprobarDatos() throws Exception {
+    public void comprobarDatos(int campo) throws Exception {
         String dia = jTextFieldDiaIntroducido.getText();
         String mes = jTextFieldMesIntroducido.getText();
         String año = jTextFieldAñoIntroducido.getText();
@@ -114,28 +235,52 @@ public class Interfaz extends javax.swing.JFrame {
         jTextFieldDiaIntroducido.setEnabled(true);
         jTextAreaConsolaDeErrores.setText("");
 
-        try {//Comprobamos el campo Dia
-            fecha.setDia(Integer.parseInt(jTextFieldDiaIntroducido.getText()));
-        } catch (Exception e) {
-            jTextAreaConsolaDeErrores.setText(e.getMessage());
-            jTextFieldMesIntroducido.setEnabled(false);
-            jTextFieldAñoIntroducido.setEnabled(false);
-        }
-        
-        try {// Comprobamos el campo Mes
-            fecha.setMes(Integer.parseInt(jTextFieldMesIntroducido.getText()));
-        } catch (Exception e) {
-            jTextAreaConsolaDeErrores.setText(e.getMessage());
-            jTextFieldDiaIntroducido.setEnabled(false);
-            jTextFieldAñoIntroducido.setEnabled(false);
-        }
-        
-        try {//Comprobamos al campo Año
-            fecha.setAño(Integer.parseInt(jTextFieldAñoIntroducido.getText()));
-        } catch (Exception e) {
-            jTextAreaConsolaDeErrores.setText(e.getMessage());
-            jTextFieldDiaIntroducido.setEnabled(false);
-            jTextFieldMesIntroducido.setEnabled(false);
+        //Según el parametro pasado, lanzamos una exepción
+        switch (campo) {
+            case 1://Comprobamos el campo Dia
+                try {
+                    
+                    fecha = new Fecha(Integer.parseInt(jTextFieldDiaIntroducido.getText()), Integer.parseInt(jTextFieldMesIntroducido.getText()), Integer.parseInt(jTextFieldAñoIntroducido.getText()));
+                } catch (Exception e) {
+                    ExcepciónFechaIlegal ex = (ExcepciónFechaIlegal) e;
+                    if (e.getCause() == null) {
+                            jTextAreaConsolaDeErrores.setText("Debes escribir un día valido");
+                    }
+                    jTextAreaConsolaDeErrores.setText(e.getTipodeExcepcion());
+                    jTextFieldMesIntroducido.setEnabled(false);
+                    jTextFieldAñoIntroducido.setEnabled(false);
+                }
+                break;
+            case 2:// Comprobamos el campo Mes
+                try {
+                    fecha.setMes(Integer.parseInt(jTextFieldMesIntroducido.getText()));
+                } catch (Exception e) {
+                    if (e.getCause() == null) {
+                        jTextAreaConsolaDeErrores.setText("Debes escribir un mes valido");
+                    } else {
+
+                        jTextAreaConsolaDeErrores.setText(e.getLocalizedMessage());
+                    }
+                    jTextFieldDiaIntroducido.setEnabled(false);
+                    jTextFieldAñoIntroducido.setEnabled(false);
+                }
+                break;
+            case 3://Comprobamos al campo Año
+                try {
+                    fecha.setAño(Integer.parseInt(jTextFieldAñoIntroducido.getText()));
+                } catch (Exception e) {
+                    if (e.getCause() == null) {
+                        jTextAreaConsolaDeErrores.setText("Debes escribir un año valido");
+                    } else {
+
+                        jTextAreaConsolaDeErrores.setText(e.getLocalizedMessage());
+                    }
+                    jTextFieldDiaIntroducido.setEnabled(false);
+                    jTextFieldMesIntroducido.setEnabled(false);
+                }
+                break;
+            default:
+                break;
         }
 
         //Si todo es correcto, ponemos el dia de la semana
@@ -143,7 +288,7 @@ public class Interfaz extends javax.swing.JFrame {
             FechaIntroducida = new Fecha(Integer.parseInt(jTextFieldDiaIntroducido.getText()), Integer.parseInt(jTextFieldMesIntroducido.getText()), Integer.parseInt(jTextFieldAñoIntroducido.getText()));
             jTextFieldDiaSemanaIntroducido.setText(String.valueOf(FechaIntroducida.diaSemana()));
             jTextFieldDiasEntreFechas.setText(String.valueOf(calcularFechas()));
-        }else{
+        } else {
             jTextFieldDiaSemanaIntroducido.setText("");
             jTextFieldDiasEntreFechas.setText("");
         }
@@ -192,11 +337,9 @@ public class Interfaz extends javax.swing.JFrame {
             ResultadoFinal = resultadointro - resultadohoy;
         }
         return ResultadoFinal;
-        
-        
+
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -300,6 +443,11 @@ public class Interfaz extends javax.swing.JFrame {
         jTextFieldDiaSemanaIntroducido.setEnabled(false);
 
         jTextFieldDiaIntroducido.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTextFieldDiaIntroducido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldDiaIntroducidoActionPerformed(evt);
+            }
+        });
 
         jTextFieldMesIntroducido.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -428,6 +576,10 @@ public class Interfaz extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextFieldDiaIntroducidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDiaIntroducidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldDiaIntroducidoActionPerformed
 
     /**
      * @param args the command line arguments

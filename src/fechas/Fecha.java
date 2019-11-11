@@ -48,14 +48,14 @@ public class Fecha {
         if (dia < 1 || dia > diasMes[mes]) {
             //si el valor de día es incorrecto por cambio de mes o año, hay que recuperar los valores previos de mes o año
             throw new ExcepciónFechaIlegal(
-                    "valor de día debe estar entre 1 y " + diasMes[mes] + ", para los valores de año(" + año + ") y mes(" + mes + ")");
+                    "valor de día debe estar entre 1 y " + diasMes[mes] + ", para los valores de año(" + año + ") y mes(" + mes + ")",1);
         }
         this.dia = dia;
     }
 
     public final void setMes(int mes) {
         if (mes < 1 || mes > 12) {
-            throw new ExcepciónFechaIlegal("valor de mes incorrecto");
+            throw new ExcepciónFechaIlegal("valor de mes incorrecto",2);
         }
         int oldMes = this.mes;
         this.mes = mes;
@@ -64,7 +64,7 @@ public class Fecha {
                 setDia(getDia());
             } catch (ExcepciónFechaIlegal e) {
                 this.mes = oldMes;
-                throw new ExcepciónFechaIlegal("no se puede cambiar el mes a " + mes + " por inconsistencia con el día actual(" + dia + ") ");
+                throw new ExcepciónFechaIlegal("no se puede cambiar el mes a " + mes + " por inconsistencia con el día actual(" + dia + ") ",2);
             }
 
         }
@@ -78,7 +78,7 @@ public class Fecha {
             año += 1900;
         }
         if (año < 1931 || año > 2050) {
-            throw new ExcepciónFechaIlegal("valor de año incorrecto");
+            throw new ExcepciónFechaIlegal("valor de año incorrecto",3);
         }
         int oldAño = this.año;
         this.año = año;
@@ -87,7 +87,7 @@ public class Fecha {
                 setDia(getDia());
             } catch (ExcepciónFechaIlegal e) {
                 this.año = oldAño;
-                throw new ExcepciónFechaIlegal("no se puede cambiar el año a " + año + " por inconsistencia con mes(" + mes + ") y día(" + dia + ") ");
+                throw new ExcepciónFechaIlegal("no se puede cambiar el año a " + año + " por inconsistencia con mes(" + mes + ") y día(" + dia + ") ",3);
             }
         }
     }
