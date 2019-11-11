@@ -118,7 +118,6 @@ public class Interfaz extends javax.swing.JFrame {
     /**
      * Metodo que comprueba los datos introducidos
      *
-     * @throws Exception
      */
     public void comprobarDatos() {
         String dia = jTextFieldDiaIntroducido.getText();
@@ -190,18 +189,24 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     /**
-     * Metodo que calcula los dias entre fechas
+     * Metodo que calcula los dias entre fechas según las fechas de los
+     * parametros pasados
      *
+     * @param diaHoy
+     * @param mesHoy
+     * @param añoHoy
+     * @param diaIntroducido
+     * @param mesIntroducido
+     * @param añoIntroducido
      * @return
      */
     public int calcularFechas(int diaHoy, int mesHoy, int añoHoy, int diaIntroducido, int mesIntroducido, int añoIntroducido) {
-        
+
         try {
             Date fechaInicial = new Date(diaHoy, mesHoy, añoHoy);
             Date fechaFinal = new Date(diaIntroducido, mesIntroducido, añoIntroducido);
 
             //return (int) ((fechaFinal.getTime() - fechaInicial.getTime()) / 86400000);
-
             long startTime = fechaInicial.getTime();
             long endTime = fechaFinal.getTime();
             long diffTime = endTime - startTime;
