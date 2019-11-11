@@ -7,13 +7,10 @@ package Interfaz;
 
 import fechas.*;
 import java.awt.Color;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JTextField;
+import java.util.concurrent.TimeUnit;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -129,6 +126,10 @@ public class Interfaz extends javax.swing.JFrame {
         String año = jTextFieldAñoIntroducido.getText();
         Fecha fecha = new Fecha();
 
+        String añoHoy = jTextFieldAñoHoy.getText();
+        String mesHoy = jTextFieldMesHoy.getText();
+        String diaHoy = jTextFieldDiaHoy.getText();
+
         jTextFieldAñoIntroducido.setEnabled(true);
         jTextFieldMesIntroducido.setEnabled(true);
         jTextFieldDiaIntroducido.setEnabled(true);
@@ -137,7 +138,7 @@ public class Interfaz extends javax.swing.JFrame {
         try {
             FechaIntroducida = new Fecha(Integer.parseInt(dia), Integer.parseInt(mes), Integer.parseInt(año));
             jTextFieldDiaSemanaIntroducido.setText(String.valueOf(FechaIntroducida.diaSemana()));
-            jTextFieldDiasEntreFechas.setText(String.valueOf(calcularFechas(jTextFieldAñoHoy.getText()+"-"+jTextFieldMesHoy.getText()+"-"+jTextFieldDiaHoy,año+"-"+mes+"-"+dia)));
+            jTextFieldDiasEntreFechas.setText(String.valueOf(calcularFechas(Integer.parseInt(añoHoy), Integer.parseInt(mesHoy), Integer.parseInt(diaHoy), Integer.parseInt(año), Integer.parseInt(mes), Integer.parseInt(dia))));
         } catch (Exception j) {
             jTextFieldDiasEntreFechas.setText("");
             jTextFieldDiaSemanaIntroducido.setText("");
@@ -193,14 +194,19 @@ public class Interfaz extends javax.swing.JFrame {
      *
      * @return
      */
-    public int calcularFechas(String stringfechaInicial, String stringfechaIntroducida) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
+    public int calcularFechas(int diaHoy, int mesHoy, int añoHoy, int diaIntroducido, int mesIntroducido, int añoIntroducido) {
+        
         try {
-            Date fechaInicial = dateFormat.parse(stringfechaInicial); //"2016-02-14"
-            Date fechaFinal = dateFormat.parse(stringfechaIntroducida);//"2016-03-22"
-            
-            return (int) ((fechaFinal.getTime() - fechaInicial.getTime()) / 86400000);
+            Date fechaInicial = new Date(diaHoy, mesHoy, añoHoy);
+            Date fechaFinal = new Date(diaIntroducido, mesIntroducido, añoIntroducido);
+
+            //return (int) ((fechaFinal.getTime() - fechaInicial.getTime()) / 86400000);
+
+            long startTime = fechaInicial.getTime();
+            long endTime = fechaFinal.getTime();
+            long diffTime = endTime - startTime;
+            return (int) TimeUnit.DAYS.convert(diffTime, TimeUnit.MILLISECONDS);
+
         } catch (Exception e) {
             //Si falla, no hacemos nada, el metodo devolverá un 0
         }
