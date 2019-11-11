@@ -11,19 +11,8 @@ package fechas;
  */
 public class ExcepciónFechaIlegal extends RuntimeException{
     
-    //1 = dia, 2 = mes, 3 = año
-    int tipodeExcepcion;
-    
     public ExcepciónFechaIlegal(String texto, int tipoException){
         super(texto);
-        tipodeExcepcion = tipoException;
     }
-
-    public int getTipodeExcepcion() {
-        return tipodeExcepcion;
-    }
-    
-    
-    
     
 }
